@@ -17,7 +17,7 @@ namespace Microservice.Framework.Persistence.EFCore
             UseBulkOperationConfiguration<DefaultBulkOperationConfiguration>();
         }
 
-        void IEntityFrameworkConfiguration.Apply(IServiceCollection serviceCollection)
+        public void Apply(IServiceCollection serviceCollection)
         {
             serviceCollection.AddTransient<IEntityFrameworkConfiguration>(s => this);
             _registerUniqueConstraintDetectionStrategy(serviceCollection);

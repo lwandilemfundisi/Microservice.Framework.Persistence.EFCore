@@ -33,6 +33,7 @@ namespace Microservice.Framework.Persistence.EFCore
             _logger = logger;
             _context = contextProvider.CreateContext();
             _strategy = strategy;
+            _configuration = configuration;
         }
 
         public Task Dispose(CancellationToken cancellationToken)
@@ -74,7 +75,7 @@ namespace Microservice.Framework.Persistence.EFCore
                 return await _context
                     .GetStoredProcedure(namedCriteria.Name)
                     .WithSqlParams(namedCriteria.Parameters)
-                    .ExecuteStoredProc<TModel>(int.Parse(_configuration["Persistence:StoredProcedureTimeout"].OrDefault("180")));
+                    .ExecuteStoredProc<TModel>(int.Parse(_configuration["Timeout"].OrDefault("180")));
             }
             catch(Exception ex)
             {

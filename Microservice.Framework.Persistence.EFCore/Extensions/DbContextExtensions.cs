@@ -83,10 +83,10 @@ namespace Microservice.Framework.Persistence.EFCore
                 throw new InvalidOperationException(
                   "Call GetStoredProcedure before using this method");
 
-            var param = cmd.CreateParameter();
-
             foreach (var item in parameters)
             {
+                var param = cmd.CreateParameter();
+
                 if (item.Value.IsNull())
                 {
                     param.ParameterName = item.Key;
