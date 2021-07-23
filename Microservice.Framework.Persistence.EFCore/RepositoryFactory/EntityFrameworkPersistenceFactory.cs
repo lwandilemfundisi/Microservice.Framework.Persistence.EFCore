@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microservice.Framework.Persistence.Queries.Filtering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 
 namespace Microservice.Framework.Persistence.EFCore
 {
@@ -32,14 +33,18 @@ namespace Microservice.Framework.Persistence.EFCore
         {
             return new EntityFrameworkPersistence<TDbContext>(
                 _serviceProvider.GetRequiredService<ILogger<EntityFrameworkPersistence<TDbContext>>>(), 
-                contextProvider, strategy);
+                contextProvider, 
+                strategy,
+                _serviceProvider.GetService<IConfiguration>());
         }
 
         public IPersistence GetPersistence(Type type)
         {
             return new EntityFrameworkPersistence<TDbContext>(
                 _serviceProvider.GetRequiredService<ILogger<EntityFrameworkPersistence<TDbContext>>>(),
-                contextProvider, strategy);
+                contextProvider, 
+                strategy,
+                _serviceProvider.GetService<IConfiguration>());
         }
     }
 }

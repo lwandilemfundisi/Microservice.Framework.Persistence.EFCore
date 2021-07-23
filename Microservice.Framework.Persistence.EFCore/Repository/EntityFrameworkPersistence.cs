@@ -7,22 +7,27 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microservice.Framework.Persistence.EFCore.Queries.NamedQueries;
+using System.Data.Common;
+using Microsoft.Extensions.Configuration;
 
 namespace Microservice.Framework.Persistence.EFCore
 {
-    class EntityFrameworkPersistence<TDbContext> : IPersistence
+    public class EntityFrameworkPersistence<TDbContext> : IPersistence
         where TDbContext : DbContext
     {
         private readonly ILogger<EntityFrameworkPersistence<TDbContext>> _logger;
         private readonly IUniqueConstraintDetectionStrategy _strategy;
         private readonly TDbContext _context;
+        private readonly IConfiguration _configuration;
 
         private readonly AsyncLock _asyncLock = new AsyncLock();
 
         public EntityFrameworkPersistence(
             ILogger<EntityFrameworkPersistence<TDbContext>> logger,
             IDbContextProvider<TDbContext> contextProvider,
-            IUniqueConstraintDetectionStrategy strategy
+            IUniqueConstraintDetectionStrategy strategy,
+            IConfiguration configuration
         )
         {
             _logger = logger;
@@ -62,9 +67,22 @@ namespace Microservice.Framework.Persistence.EFCore
             }
         }
 
-        public Task<IEnumerable<TModel>> ExecuteStoredProcedure<TModel>(NamedCriteria namedCriteria, CancellationToken cancellationToken)
+        public async Task<IEnumerable<TModel>> ExecuteStoredProcedure<TModel>(NamedCriteria namedCriteria, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _context
+                    .GetStoredProcedure(namedCriteria.Name)
+                    .WithSqlParams(namedCriteria.Parameters)
+                    .ExecuteStoredProc<TModel>(int.Parse(_configuration["Persistence:StoredProcedureTimeout"].OrDefault("180")));
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(
+                    "Entity Framework execute stored procedure detected an " +
+                    "exception for stored procedure with name '{0}', message : {1}", namedCriteria.Name, ex);
+                throw;
+            }
         }
 
         public async Task<TDomain> Get<TDomain, TDomainCriteria>(TDomainCriteria domainCriteria, CancellationToken cancellationToken)
