@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Microservice.Framework.Persistence.EFCore.Attributes
 {
     [AttributeUsage(
-        AttributeTargets.Class,
+        AttributeTargets.Property,
         AllowMultiple = true
         )]
     public class MapTo : Attribute

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
 	  <PackageId>Microservice.Framework.Persistence.EFCore</PackageId>
-	  <Version>1.0.4</Version>
+	  <Version>1.0.5</Version>
 	  <Authors>Lwandile Mfundisi</Authors>
 	  <Description>Microservice.Framework.Persistence.EFCore implemented using entity framework core as the orm</Description>
 	  <IsPackable>true</IsPackable>
