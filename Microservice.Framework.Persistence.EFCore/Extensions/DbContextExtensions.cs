@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microservice.Framework.Common;
+using Microservice.Framework.Persistence.EFCore.Attributes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -136,7 +137,7 @@ namespace Microservice.Framework.Persistence.EFCore
             var props = typeof(T).GetRuntimeProperties();
 
             var colMapping = dr.GetColumnSchema()
-              .Where(x => props.Any(y => y.Name.ToLower() == x.ColumnName.ToLower()))
+              .Where(x => props.Any(y => GetName(y) == x.ColumnName.ToLower()))
               .ToDictionary(key => key.ColumnName.ToLower());
 
             if (dr.HasRows)
@@ -180,6 +181,20 @@ namespace Microservice.Framework.Persistence.EFCore
                     command.Connection.Close();
                 }
             }
+        }
+
+        private static string GetName(PropertyInfo propertyInfo)
+        {
+            if(Attribute.IsDefined(propertyInfo, typeof(MapTo)))
+            {
+                var attr = (MapTo[])propertyInfo.GetCustomAttributes(typeof(MapTo), false);
+                if (attr.HasItems())
+                {
+                    return attr.First().Name.ToLower();
+                }
+            }    
+
+            return propertyInfo.Name.ToLower();
         }
     }
 }
