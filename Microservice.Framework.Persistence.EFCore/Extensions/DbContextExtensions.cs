@@ -171,7 +171,7 @@ namespace Microservice.Framework.Persistence.EFCore
                         return reader.MapToList<T>();
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     throw;
                 }

@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace Microservice.Framework.Persistence.EFCore.Queries.NamedQueries
 {
-    public abstract class EFCoreNamedQuery : StoredProcedureQuery<EFCoreNamedCriteria>
+    public abstract class EFCoreNamedQuery<TModel> 
+        : StoredProcedureQuery<TModel, EFCoreNamedCriteria>
+        where TModel : class
     {
     }
 }

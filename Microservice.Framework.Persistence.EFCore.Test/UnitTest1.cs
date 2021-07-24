@@ -46,25 +46,20 @@ namespace Microservice.Framework.Persistence.EFCore.Test
             
             var h = new TestNamedHandler(_factory);
 
-            var all = await h.FindAll(new TestNamedProc());
+            var all = await h.Find(new TestNamedProc());
         }
     }
 
-    public class TestProductQuery : EFCoreCriteriaDomainQuery<Product>
+    public class TestNamedProc : EFCoreNamedQuery<ToCount>
     {
-
-    }
-
-    public class TestNamedProc : EFCoreNamedQuery
-    {
-        public override string Name => "[SalesLT].[Product_GetAll]";
+        public override string Name => "[SalesLT].[Product_CountAll]";
 
         public override void OnBuildParameters(IDictionary<string, object> parameters)
         {
         }
     }
 
-    public class TestNamedHandler : EFCoreNamedQueryHandler<Product>
+    public class TestNamedHandler : EFCoreNamedQueryHandler<ToCount>
     {
         public TestNamedHandler(IPersistenceFactory p)
             : base(p)
@@ -73,12 +68,8 @@ namespace Microservice.Framework.Persistence.EFCore.Test
         }
     }
 
-    public class TestCriteriaHandler : EFCoreCriteriaDomainQueryHandler<Product>
+    public class ToCount
     {
-        public TestCriteriaHandler(IPersistenceFactory p)
-            : base(p)
-        {
-
-        }
+        public int Value { get; set; }
     }
 }
