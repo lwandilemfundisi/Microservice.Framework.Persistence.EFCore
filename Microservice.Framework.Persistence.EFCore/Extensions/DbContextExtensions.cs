@@ -148,7 +148,7 @@ namespace Microservice.Framework.Persistence.EFCore
                     foreach (var prop in props)
                     {
                         var val =
-                          dr.GetValue(colMapping[prop.Name.ToLower()].ColumnOrdinal.Value);
+                          dr.GetValue(colMapping[GetName(prop)].ColumnOrdinal.Value);
                         prop.SetValue(obj, val == DBNull.Value ? null : val);
                     }
                     objList.Add(obj);
