@@ -1,5 +1,4 @@
-﻿using Microservice.Framework.Persistence.EFCore.RepositoryFactory;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -7,7 +6,7 @@ using System;
 
 namespace Microservice.Framework.Persistence.EFCore
 {
-    public class EntityFrameworkPersistenceFactory<TDbContext> : IEntityFrameworkPersistenceFactory<TDbContext>
+    public class EntityFrameworkPersistenceFactory<TDbContext> : IPersistenceFactory
         where TDbContext : DbContext
     {
         private readonly IServiceProvider _serviceProvider;
