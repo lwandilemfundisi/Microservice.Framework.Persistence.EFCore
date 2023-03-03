@@ -1,17 +1,13 @@
-﻿using Microservice.Framework.Common;
-using Microservice.Framework.Persistence;
+﻿using Microservice.Framework.Persistence.EFCore.RepositoryFactory;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Microservice.Framework.Persistence.Queries.Filtering;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace Microservice.Framework.Persistence.EFCore
 {
-    public class EntityFrameworkPersistenceFactory<TDbContext> : IPersistenceFactory
+    public class EntityFrameworkPersistenceFactory<TDbContext> : IEntityFrameworkPersistenceFactory<TDbContext>
         where TDbContext : DbContext
     {
         private readonly IServiceProvider _serviceProvider;

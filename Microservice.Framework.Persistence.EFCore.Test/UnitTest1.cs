@@ -29,7 +29,7 @@ namespace Microservice.Framework.Persistence.EFCore.Test
             serviceCollection.AddLogging();
             EntityFrameworkConfiguration.New.Apply(serviceCollection);
             serviceCollection.AddTransient<IDbContextProvider<TestDbContext>, TestDbContextProvider>();
-            serviceCollection.AddTransient<IPersistenceFactory, EntityFrameworkPersistenceFactory<TestDbContext>>();
+            serviceCollection.AddTransient<EntityFrameworkPersistenceFactory<TestDbContext>, EntityFrameworkPersistenceFactory<TestDbContext>>();
             serviceCollection.AddSingleton<IConfiguration>(rctx => { return configuration; });
             var provicer = serviceCollection.BuildServiceProvider();
 
